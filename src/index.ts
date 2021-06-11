@@ -1,22 +1,15 @@
-'use strict';
-
-import { Logger } from 'sitka';
-
-export class Example {
-	/* Private Instance Fields */
-
-	private _logger: Logger;
-
-	/* Constructor */
-
-	constructor() {
-		this._logger = Logger.getLogger({ name: this.constructor.name });
-	}
-
-	/* Public Instance Methods */
-
-	public exampleMethod(param: string): string {
-		this._logger.debug('Received: ' + param);
-		return param;
-	}
+export class World {
 }
+
+export class NextWorldGenerator {
+    oldWorld: World;
+    constructor(world: World) {
+        this.oldWorld = world;
+    }
+
+    nextWorld(): World {
+        return new World();
+    }
+}
+
+
