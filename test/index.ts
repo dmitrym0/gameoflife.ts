@@ -3,14 +3,63 @@ import 'assert'
 import 'jest'
 import 'mocha'
 import {expect } from  'chai';
-var chai = require('chai')
+import chai = require('chai');
 import 'expect'
 import * as Gol  from '../dist/index';
-var should = chai.should();
-describe('Typescript usage suite', () => {
-  it('should be able to execute a test', () => {
-      expect(true).to.equal(true);
-      const w = new Gol.World();
-      w.should.be.instanceOf(Gol.World);
-  });
+const should = chai.should();
+import * as td from 'testdouble'
+
+
+
+describe('World', () => {
+    it('should return a world', () => {
+        const w = new Gol.World();
+        w.should.be.instanceOf(Gol.World);
+    });
+});
+
+
+describe('Coordinates', () => {
+    it('should be an empty map', () => {
+        const map = new Gol.CoordinatesMap();
+        map.size().should.equal(0);
+    });
+    it('should preserve coordinates in a world', () => {
+        const map = new Gol.CoordinatesMap();
+        map.set(new Gol.Coordinate(42,42), new Gol.Cell());
+        const world = new Gol.World(map);
+        world.coordinates.size().should.equal(1);
+    });
+
+   });
+
+describe('NextWorldGenerator', () => {
+    it('should return a new world thats different from the old world', () => {
+        const w = new Gol.World();
+        const worldGenerator = new Gol.NextWorldGenerator(w);
+        const newWorld = worldGenerator.nextWorld();
+        w.should.to.not.equal(newWorld);
+        w.should.be.instanceOf(Gol.World);
+    });
+});
+
+describe('Neighbours', () => {
+    it('there shouldnt be any neighbours in an empty world', () => {
+        const map = new Gol.CoordinatesMap();
+        const world = new Gol.World(map);
+        const newCoord = new Gol.Coordinate(0, 0);
+        const neighbours = new Gol.Neighbours(world, newCoord);
+        neighbours.getNeighbours().size().should.equal(0);
+    });
+
+
+    it('should return 1 neighbours', () => {
+        const map = new Gol.CoordinatesMap();
+        map.set(new Gol.Coordinate(41, 42), new Gol.Cell());
+        const world = new Gol.World(map);
+        const newCoord = new Gol.Coordinate(42, 42);
+        const neighbours = new Gol.Neighbours(world, newCoord);
+        neighbours.getNeighbours().size().should.equal(1);
+    });
+
 });
