@@ -13,11 +13,10 @@ import * as td from 'testdouble'
 
 describe('World', () => {
     it('should return a world', () => {
-        const w = new Gol.World();
+        const w = new Gol.World(new Gol.CoordinatesMap());
         w.should.be.instanceOf(Gol.World);
     });
 });
-
 
 describe('Coordinates', () => {
     it('should be an empty map', () => {
@@ -35,7 +34,7 @@ describe('Coordinates', () => {
 
 describe('NextWorldGenerator', () => {
     it('should return a new world thats different from the old world', () => {
-        const w = new Gol.World();
+        const w = new Gol.World(new Gol.CoordinatesMap());
         const worldGenerator = new Gol.NextWorldGenerator(w);
         const newWorld = worldGenerator.nextWorld();
         w.should.to.not.equal(newWorld);
