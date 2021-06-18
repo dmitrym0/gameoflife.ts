@@ -18,7 +18,7 @@ export class CoordinatesMap {
 
     // from https://stackoverflow.com/a/54965188/38753
     // TODO Refactor
-    boardSize = 1000;
+    boardSize = 100;
 
     constructor() {
         this.coordinatesmap = new Array(this.boardSize)
@@ -71,7 +71,25 @@ export class NextWorldGenerator {
     }
 
     nextWorld(): World {
-        return new World(this.oldWorld.coordinates);
+        const newMap = new CoordinatesMap();
+        for (let x = 0; x < newMap.boardSize; ++x) {
+            for (let y = 0; y < newMap.boardSize; ++y) {
+                const coordinate = new Coordinate(x,y);
+                const neighbours = new Neighbours(this.oldWorld, coordinate).getNeighbours();
+                const emptyOrCell = this.oldWorld.coordinates.at(coordinate);
+
+                if (emptyOrCell instanceof Empty) {
+                    if (neighbours.length === 3) {
+                        newMap.set(coordinate, new Cell());
+                    }
+                } else {
+                    if (neighbours.length === 2) {
+                        newMap.set(coordinate, new Cell());
+                    }
+                }
+            }
+        }
+        return new World(newMap);
     }
 }
 
@@ -97,7 +115,7 @@ export class Neighbours {
         for (const x of coordsOffsets) {
             for (const y of coordsOffsets) {
                 const coordOfpotentialNeighbour = new Coordinate(this.atCoordinate.x - x, this.atCoordinate.y - y);
-                const invalidCoordinate = (coordOfpotentialNeighbour.x < 0 || coordOfpotentialNeighbour.y < 0);
+                const invalidCoordinate = (coordOfpotentialNeighbour.x < 0 || coordOfpotentialNeighbour.y < 0 || coordOfpotentialNeighbour.x > 100 - 1 || coordOfpotentialNeighbour.y > 100 - 1);
                 if (invalidCoordinate) {
                     continue;
                 }
@@ -128,11 +146,7 @@ export class Coordinate {
 
 
 /*
-
 Local Variables:
 compile-command: "cd .. ; npm run build && ts-mocha  test/*.ts""
 End:
-
-
-
 */

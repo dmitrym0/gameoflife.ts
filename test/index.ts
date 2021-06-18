@@ -40,6 +40,24 @@ describe('NextWorldGenerator', () => {
         w.should.to.not.equal(newWorld);
         w.should.be.instanceOf(Gol.World);
     });
+
+    it('should return an empty world from an empty world', () => {
+        const w = new Gol.World(new Gol.CoordinatesMap());
+        const worldGenerator = new Gol.NextWorldGenerator(w);
+        const newWorld = worldGenerator.nextWorld();
+        newWorld.coordinates.size().should.equal(0);
+    });
+
+    it('should return a non empty world when a cell has a bunch of neighbours', () => {
+        const map = new Gol.CoordinatesMap();
+        map.set(new Gol.Coordinate(42,42), new Gol.Cell());
+        map.set(new Gol.Coordinate(42,41), new Gol.Cell());
+        map.set(new Gol.Coordinate(41,41), new Gol.Cell());
+        const w = new Gol.World(map);
+        const worldGenerator = new Gol.NextWorldGenerator(w);
+        const newWorld = worldGenerator.nextWorld();
+        newWorld.coordinates.size().should.equal(4);
+    });
 });
 
 describe('Neighbours', () => {
@@ -62,3 +80,11 @@ describe('Neighbours', () => {
     });
 
 });
+
+
+
+/*
+Local Variables:
+compile-command: "cd .. ; ts-mocha  test/*.ts""
+End:
+*/
