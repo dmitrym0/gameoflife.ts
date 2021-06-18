@@ -51,12 +51,14 @@ export class World {
     static iteration = 0;
 
     iteration: number;
+    boardSize: number;
 
     coordinates: CoordinatesMap;
 
     constructor(coordinates: CoordinatesMap) {
         this.iteration = ++World.iteration;
         this.coordinates = coordinates;
+        this.boardSize = this.coordinates.boardSize;
         // console.log(`Iteration: ${this.iteration}`);
     }
 
@@ -115,7 +117,7 @@ export class Neighbours {
         for (const x of coordsOffsets) {
             for (const y of coordsOffsets) {
                 const coordOfpotentialNeighbour = new Coordinate(this.atCoordinate.x - x, this.atCoordinate.y - y);
-                const invalidCoordinate = (coordOfpotentialNeighbour.x < 0 || coordOfpotentialNeighbour.y < 0 || coordOfpotentialNeighbour.x > 100 - 1 || coordOfpotentialNeighbour.y > 100 - 1);
+                const invalidCoordinate = (coordOfpotentialNeighbour.x < 0 || coordOfpotentialNeighbour.y < 0 || coordOfpotentialNeighbour.x > this.world.boardSize - 1 || coordOfpotentialNeighbour.y > this.world.boardSize - 1);
                 if (invalidCoordinate) {
                     continue;
                 }
