@@ -48,7 +48,7 @@ describe('Neighbours', () => {
         const world = new Gol.World(map);
         const newCoord = new Gol.Coordinate(0, 0);
         const neighbours = new Gol.Neighbours(world, newCoord);
-        neighbours.getNeighbours().size().should.equal(0);
+        neighbours.getNeighbours().length.should.equal(0);
     });
 
 
@@ -58,7 +58,7 @@ describe('Neighbours', () => {
         const world = new Gol.World(map);
         const newCoord = new Gol.Coordinate(42, 42);
         const neighbours = new Gol.Neighbours(world, newCoord);
-        neighbours.getNeighbours().size().should.equal(1);
+        neighbours.getNeighbours().length.should.equal(1);
     });
 
 });

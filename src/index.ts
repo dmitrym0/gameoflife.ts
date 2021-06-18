@@ -90,9 +90,9 @@ export class Neighbours {
         this.world = world;
     }
 
-    getNeighbours(): CoordinatesMap{
+    getNeighbours(): Coordinate[]{
         const coordsOffsets = [ -1, 0, 1];
-        const neighbourmap = new CoordinatesMap();
+        const neighbourmap: Coordinate[] = [];
 
         for (const x of coordsOffsets) {
             for (const y of coordsOffsets) {
@@ -103,7 +103,7 @@ export class Neighbours {
                 }
                 const maybeCell = this.world.coordinates.at(coordOfpotentialNeighbour);
                 if (!(maybeCell instanceof Empty) && !coordOfpotentialNeighbour.same(this.atCoordinate) && !invalidCoordinate) {
-                    neighbourmap.set(coordOfpotentialNeighbour, maybeCell);
+                    neighbourmap.push(coordOfpotentialNeighbour);
                 }
             }
         }
@@ -124,3 +124,15 @@ export class Coordinate {
         return this.x === coordinate.x && this.y === coordinate.y;
     }
 }
+
+
+
+/*
+
+Local Variables:
+compile-command: "cd .. ; npm run build && ts-mocha  test/*.ts""
+End:
+
+
+
+*/
