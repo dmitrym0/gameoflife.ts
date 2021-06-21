@@ -166,9 +166,51 @@ export class Coordinate {
 }
 
 
+class WorldPainter {
+    drawWorld(context: any, world: World) {
+        for (let x = 0; x < world.boardSize; x++) {
+            for (let y = 0; y < world.boardSize; y++) {
+                if (!(world.coordinates.at(new Coordinate(x,y)) instanceof Empty)) {
+                    context.point(x,y);
+                }
+            }
+        }
+    }
+}
+
+
 
 /*
 Local Variables:
 compile-command: "cd .. ; npm run build && ts-mocha  test/*.ts""
 End:
 */
+
+
+import * as ctx from 'axel';
+import * as fs from 'fs';
+const fd = fs.openSync('/dev/stdin', 'rs')
+function main() {
+
+    const map = new CoordinatesMap();
+    map.set(new Coordinate(5,5), new Cell());
+    map.set(new Coordinate(5,6), new Cell());
+    map.set(new Coordinate(5,7), new Cell());
+    map.set(new Coordinate(4,5), new Cell());
+    map.set(new Coordinate(4,6), new Cell());
+    let currentWorld = new World(map);
+
+    for (let i = 0; i < 100; ++i) {
+        ctx.bg(0,0,0);
+        ctx.clear();
+        ctx.bg(0,255,0);
+        new WorldPainter().drawWorld(ctx, currentWorld);
+        fs.readSync(fd, new Buffer(1));
+        currentWorld = new NextWorldGenerator(currentWorld).nextWorld();
+    }
+
+}
+
+
+
+main();
