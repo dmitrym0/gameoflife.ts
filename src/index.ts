@@ -31,12 +31,13 @@ export class CoordinatesMap {
         return this.coordinatesmap[coordinate.x][coordinate.y];
     }
 
-    set(coordinate: Coordinate, cell: Cell) {
+    set(coordinate: Coordinate, cell: Cell | Empty) {
         this.coordinatesmap[coordinate.x][coordinate.y] = cell;
     }
 
     size() {
         let cells = 0;
+
         for (let x = 0; x < this.boardSize; x++) {
             for (let y = 0; y < this.boardSize; y++) {
                 if (!(this.coordinatesmap[x][y] instanceof Empty)) {
@@ -85,20 +86,39 @@ export class NextWorldGenerator {
                         newMap.set(coordinate, new Cell());
                     }
                 } else {
-                    if (neighbours.length === 2) {
-                        newMap.set(coordinate, new Cell());
+
+                    switch (neighbours.length) {
+                        case 3: {
+                            // fall through?
+                            newMap.set(coordinate, new Cell());
+                            break;
+                        }
+                        case 2: {
+                            newMap.set(coordinate, new Cell());
+                            break;
+                        }
+                        default: {
+                            newMap.set(coordinate, new Empty());
+                            break;
+                        }
                     }
                 }
             }
         }
+
         return new World(newMap);
     }
 }
 
 
 // cells
-export class Cell {}
-export class Empty extends Cell {}
+export class Cell {
+}
+export class Empty extends Cell {
+    constructor() {
+        super();
+    }
+}
 
 export class Neighbours {
 
