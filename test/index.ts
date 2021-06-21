@@ -48,7 +48,7 @@ describe('NextWorldGenerator', () => {
         newWorld.coordinates.size().should.equal(0);
     });
 
-    it('should return a non empty world when a cell has a bunch of neighbours', () => {
+    it('should return a non empty world when a cell has a bunch of neighbours and reproduces', () => {
         const map = new Gol.CoordinatesMap();
         map.set(new Gol.Coordinate(42,42), new Gol.Cell());
         map.set(new Gol.Coordinate(42,41), new Gol.Cell());
@@ -57,6 +57,30 @@ describe('NextWorldGenerator', () => {
         const worldGenerator = new Gol.NextWorldGenerator(w);
         const newWorld = worldGenerator.nextWorld();
         newWorld.coordinates.size().should.equal(4);
+    });
+
+    it('should return an empty world when all cells die ', () => {
+        const map = new Gol.CoordinatesMap();
+        map.set(new Gol.Coordinate(42,42), new Gol.Cell());
+        map.set(new Gol.Coordinate(42,41), new Gol.Cell());
+        const w = new Gol.World(map);
+        const worldGenerator = new Gol.NextWorldGenerator(w);
+        const newWorld = worldGenerator.nextWorld();
+        newWorld.coordinates.size().should.equal(0);
+    });
+
+    it('should return a  world with one cell because the other two neighbours die', () => {
+        const map = new Gol.CoordinatesMap();
+        map.set(new Gol.Coordinate(41,41), new Gol.Cell());
+        map.set(new Gol.Coordinate(42,42), new Gol.Cell());
+        map.set(new Gol.Coordinate(43,43), new Gol.Cell());
+        const w = new Gol.World(map);
+        const worldGenerator = new Gol.NextWorldGenerator(w);
+        const newWorld = worldGenerator.nextWorld();
+
+        expect(newWorld.coordinates.at(new Gol.Coordinate(41,42))).to.be.an.instanceOf(Gol.Empty);
+        expect(newWorld.coordinates.at(new Gol.Coordinate(43,42))).to.be.an.instanceOf(Gol.Empty);
+        newWorld.coordinates.size().should.equal(1);
     });
 });
 
@@ -79,6 +103,18 @@ describe('Neighbours', () => {
         neighbours.getNeighbours().length.should.equal(1);
     });
 
+
+    it('should return right number of neighbours', () => {
+        const map = new Gol.CoordinatesMap();
+        map.set(new Gol.Coordinate(42,42), new Gol.Cell());
+        map.set(new Gol.Coordinate(41,42), new Gol.Cell());
+        map.set(new Gol.Coordinate(43,42), new Gol.Cell());
+        const w = new Gol.World(map);
+
+        new Gol.Neighbours(w, new Gol.Coordinate(42,42)).getNeighbours().length.should.equal(2);
+        new Gol.Neighbours(w, new Gol.Coordinate(41,42)).getNeighbours().length.should.equal(1);
+        new Gol.Neighbours(w, new Gol.Coordinate(43,42)).getNeighbours().length.should.equal(1);
+    });
 });
 
 
