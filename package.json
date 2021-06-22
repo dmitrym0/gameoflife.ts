@@ -38,7 +38,6 @@
     "version": "npm run build && npm run changelog:update"
   },
   "devDependencies": {
-    "@types/axel": "^0.0.0",
     "@types/chai": "^4.1.6",
     "@types/expect": "^24.3.0",
     "@types/mocha": "^8.2.2",
@@ -64,6 +63,7 @@
     }
   },
   "dependencies": {
+    "@types/axel": "^0.0.0",
     "axel": "^0.0.3",
     "sitka": "^1.0.5"
   }

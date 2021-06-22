@@ -15,7 +15,8 @@ function main() {
     for (let i = 0; i < 100; ++i) {
         ctx.bg(0,0,0);
         ctx.clear();
-        ctx.bg(0,255,0);
+        ctx.fg(0,255,0);
+        // ctx.brush = '*'; // <-- doesn't work
         new Gol.WorldPainter().drawWorld(ctx, currentWorld);
         fs.readSync(fd, new Buffer(1));
         currentWorld = new Gol.NextWorldGenerator(currentWorld).nextWorld();
