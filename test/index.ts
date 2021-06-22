@@ -5,7 +5,8 @@ import 'mocha'
 import {expect } from  'chai';
 import chai = require('chai');
 import 'expect'
-import * as Gol  from '../dist/index';
+
+import * as Gol  from '../dist/gameoflife';
 const should = chai.should();
 import * as td from 'testdouble'
 
